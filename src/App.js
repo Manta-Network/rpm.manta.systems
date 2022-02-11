@@ -20,9 +20,9 @@ function App() {
       .then(response => response.json())
       .then((packages) => setPackages(packages.map((p) => ({
         ...p,
-        name: p.key.split('/').reverse()[0].split('_')[0],
-        version: p.key.split('/').reverse()[0].split('_')[1],
-        arch: p.key.split('/').reverse()[0].split('_')[2].replace('.rpm', ''),
+        name: p.key.split('/').reverse()[0].split('-')[0],
+        version: p.key.split('/').reverse()[0].replace('manta-', '').replace('.fc35.x86_64.rpm', ''),
+        arch: p.key.split('/')[1],
       }))))
       .catch(console.error);
   }, []);
