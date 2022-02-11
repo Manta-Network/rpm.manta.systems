@@ -322,6 +322,50 @@ function App() {
               }
             </Highlight>
           </Tab>
+          <Tab eventKey="packages" title="packages">
+            <h4>
+              packages available from this repository
+            </h4>
+            <ul>
+              {
+                [...new Set(packages.map((p) => p.name))].map((name) => (
+                  <li key={name}>
+                    <strong>{name}</strong>
+                    <ul>
+                      {
+                        [...new Set(packages.filter(p => p.name === name).map(p => p.arch))].map((arch) => (
+                          <li key={arch}>
+                            {arch}
+                            <ul>
+                              {
+                                packages.filter(p => p.name === name && p.arch === arch).sort((a, b) => ((a.version > b.version) ? 1 : (a.version < b.version) ? -1 : 0)).reverse().map((p) => (
+                                  <li key={p.version}>
+                                    <a href={`https://deb.manta.systems/${p.key}`}>
+                                      {p.version}
+                                    </a>
+                                    <span style={{marginLeft: '0.5em'}} className="text-muted">
+                                      ({p.key.split('/').reverse()[0]})
+                                    </span>
+                                    <br />
+                                    <span>
+                                      {size(p.size)}
+                                    </span>
+                                    <span style={{marginLeft: '0.5em'}} className="text-muted">
+                                      last modified: {new Intl.DateTimeFormat('en-GB').format(new Date(p.modified))}
+                                    </span>
+                                  </li>
+                                ))
+                              }
+                            </ul>
+                          </li>
+                        ))
+                      }
+                    </ul>
+                  </li>
+                ))
+              }
+            </ul>
+          </Tab>
         </Tabs>
       </Row>
       <Row>
